@@ -1,7 +1,9 @@
 <template>
   <div class="container mt-5">
     <div class="row" id="data-panel">
-      <div v-for="product in products" class="col-sm-3 fav-products">
+      <div v-for="product in products" 
+      :key="product"
+      class="col-sm-3 fav-products">
         <div class="card mb-2">
           <img
             class="card-img-top"

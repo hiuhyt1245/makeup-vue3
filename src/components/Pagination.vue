@@ -1,68 +1,81 @@
 <template>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <!-- 前一頁 previousPage -->
-      <!-- <li :class="['page-item', { disable: currentPage === 1 }]">
-        <router-link class="page-link" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </router-link>
-      </li> -->
-
-      <li
-        v-for="page in pages"
-        :key="page"
-        :class="['page-item', { active: currentPage === page }]"
-      >
-        <a href="#" class="page-link" @click="updatePage(page)">
-          {{ page }}
-        </a>
-      </li>
-
-      <!-- 後一頁 nextPage -->
-      <!-- <li
-        :class="['page-item', { disable: currentPage === totalPage.length }]"
-      >
-        <router-link class="page-link" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </router-link>
-      </li> -->
-    </ul>
-  </nav>
+  <div class="pagination">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination" v-if="tabs.length">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li 
+          v-for="tab in tabs"
+          :key = "tab.id"
+          :class="['page-item', { active: currentPage === tab.id }]"
+          @click="changePage(tab.id)"
+        >
+          <div class="page-link" >{{ tab.id }}</div>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 
-const emit = defineEmits(["updatePage"]);
+
 const props = defineProps({
-  currentPage: {
-    type: Number,
-    default: 1,
-  },
-  totalPage: {
-    type: Array,
-    required: true,
-  },
-  filterProducts: {
+  products: {
     type: Array,
     default: [],
-  }
-  // previousPage: {
-  //   type: Number,
-  //   required: true,
-  // },
-  // nextPage: {
-  //   type: Number,
-  //   required: true,
-  // },
+  },
+  currentPage: {
+    type: Number,
+    required: true,
+  },
 });
+const emit = defineEmits(['changePage'])
+const tabs = ref([])
+const showTabs = (productLenth) => {
+  let maxTabs = Math.ceil(Number(productLenth / 12))
+  for (let i = 1; i <= maxTabs; i++) {
+    tabs.value.push({ id: i })
+  }
+}
+const changePage = (id) => {
+  emit('changePage', id)
+}
+onMounted(() => {
+  showTabs(props.products.length)
+})
 
-const updatePage = (page) => {
-  emit("updatePage", page);
-};
+// const emit = defineEmits(["updatePage"]);
+// const props = defineProps({
+//   currentPage: {
+//     type: Number,
+//     default: 1,
+//   },
+//   totalPage: {
+//     type: Array,
+//     required: true,
+//   },
+//   filterProducts: {
+//     type: Array,
+//     default: [],
+//   }
+//   previousPage: {
+//     type: Number,
+//     required: true,
+//   },
+//   nextPage: {
+//     type: Number,
+//     required: true,
+//   },
+// });
 
-const pages= computed(() => 
-  props.totalPage = Math.ceil(props.filterProducts.length / 8)
-);
+// const updatePage = (page) => {
+//   emit("updatePage", page);
+// };
+
+// const pages= computed(() => 
+//   props.totalPage = Math.ceil(props.filterProducts.length / 8)
+// );
 
 </script>

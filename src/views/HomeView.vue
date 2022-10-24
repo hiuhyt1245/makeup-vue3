@@ -1,14 +1,18 @@
 <template>
-
-  <DataPanel :products="products"/>
-  <ProductInfo :products="products"/>
+  <DataPanel 
+  :products="products" :currentPage="currentPage" />
+  <ProductInfo :products="products" />
+  <Pagination 
+  :products="products" v-if="products.length" 
+  @changePage="changePage"
+  :currentPage="currentPage" />
 </template>
-
 
 <script setup>
 import DataPanel from "../components/DataPanel.vue";
 import ProductInfo from "../components/ProductInfo.vue";
-import { reactive} from "@vue/reactivity";
+import Pagination from "../components/Pagination.vue";
+import { reactive, ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import axios from "axios";
 
@@ -16,15 +20,20 @@ const products = reactive([]);
 // const BASE_URL = "http://makeup-api.herokuapp.com";
 // const INDEX_URL = BASE_URL + "/api/v1/products.json"
 
+const isLoaded = ref(false);
+const currentPage = ref(1);
+const changePage = (id) => (currentPage.value = id);
+
 onMounted(() => {
   axios
     .get("http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline")
     .then((response) => {
       const data = response.data;
-      data.forEach((e) => {
-        products.push(e);
+      data.forEach((e, index) => {
+        products.push({ ...e, page: Math.ceil((index + 1) / 12) });
       });
     })
     .catch((error) => console.log(error));
+  isLoaded.value = true;
 });
 </script>
