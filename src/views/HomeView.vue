@@ -9,12 +9,14 @@
 import DataPanel from "../components/DataPanel.vue";
 import ProductInfo from "../components/ProductInfo.vue";
 import { reactive} from "@vue/reactivity";
-import { onBeforeMount } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
 import axios from "axios";
 
 const products = reactive([]);
+// const BASE_URL = "http://makeup-api.herokuapp.com";
+// const INDEX_URL = BASE_URL + "/api/v1/products.json"
 
-onBeforeMount(() => {
+onMounted(() => {
   axios
     .get("http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline")
     .then((response) => {

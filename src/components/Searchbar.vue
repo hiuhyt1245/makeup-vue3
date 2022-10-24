@@ -15,9 +15,11 @@ import { ref } from "@vue/reactivity";
 
 const searchProductName = ref()
 const keyword = ref()
+const emit = defineEmits(['update'])
 
 const searchProduct= () => {
-      searchProductName = keyword.trim().toLowerCase();
-      keyword = "";
-    },
+      searchProductName.value = keyword.value.trim().toLowerCase();
+      keyword.value = "";
+      emit('update', searchProductName)
+    }
 </script>

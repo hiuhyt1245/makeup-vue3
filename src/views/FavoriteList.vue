@@ -47,14 +47,14 @@
 
 <script setup>
 import { reactive, ref } from "@vue/reactivity";
-import { onBeforeMount } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
 import ProductInfo from "../components/ProductInfo.vue";
 
 const products = reactive([]);
 const showInfo = ref(false);
 const moreInfo = ref('')
-onBeforeMount(() => {
-  const data = JSON.parse(localStorage.getItem("makeup-app-vue"));
+onMounted(() => {
+  const data = JSON.parse(localStorage.getItem("makeup-app-vue"))||[];
   data.forEach((e) => {
     products.push(e);
   });
@@ -84,8 +84,4 @@ const closeInfo = () => {
 };
 </script>
 
-<style scoped>
-.container{
-  background: transparent;
-}
-</style>
+

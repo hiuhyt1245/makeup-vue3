@@ -19,7 +19,7 @@
   </nav>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 nav{
   width: 100%;
   background: url('https://images.pexels.com/photos/7256145/pexels-photo-7256145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') no-repeat center center;
